@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <title>Lisää kategoria</title>
+</head>
+<body>
+<h1>Lisää uusi kategoria</h1>
+<form th:action="@{/categories}" th:object="${category}" method="post">
+    <div>
+        <label for="name">Nimi:</label>
+        <input type="text" id="name" name="name" th:field="*{name}" required>
+    </div>
+    <button type="submit">Tallenna</button>
+</form>
+<a href="/categories">Takaisin kategorioihin</a>
+</body>
+</html>
