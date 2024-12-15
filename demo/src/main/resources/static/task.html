@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiedot Tietokannasta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<h1>Tietokantaan tallennetut tiedot</h1>
+<table id="data-table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Otsikko</th>
+        <th>Kategoria</th>
+        <th>Päivämäärä</th>
+        <th>Kuvaus</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Tiedot lisätään tänne JavaScriptillä -->
+    </tbody>
+</table>
+
+<script>
+    // REST API:n URL (vaihda tämä omalle palvelimellesi)
+    const apiUrl = 'http://localhost:8080/api/events';
+
+    // Funktio hakee tiedot REST API:sta ja näyttää ne taulukossa
+    async function fetchAndDisplayData() {
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            const tableBody = document.querySelector('#data-table tbody');
+
+            // Tyhjennä taulukon sisältö ennen uuden datan lisäämistä
+            tableBody.innerHTML = '';
+
+            // Lisää data taulukkoon
+            data.forEach(event => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                        <td>${event.id}</td>
+                        <td>${event.title}</td>
+                        <td>${event.category}</td>
+                        <td>${event.date}</td>
+                        <td>${event.description}</td>
+                    `;
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Virhe haettaessa tietoja:', error);
+        }
+    }
+
+    // Lataa tiedot sivun latautuessa
+    fetchAndDisplayData();
+</script>
+</body>
+</html>

@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +46,11 @@ public class EventRestController {
         Event savedEvent = eventRepository.save(event);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEvent);
     }
+    @PostMapping("/add")
+    public String addEvent(@ModelAttribute Event event) {
+        eventRepository.save(event);
+        return "redirect:/events"; // Uudelleenohjaus /events, joka näyttää kaikki tapahtumat
+    }
 
     // POST /api/events/{categoryId}: Lisää uusi tapahtuma olemassa olevan kategorian kanssa
     @PostMapping("/{categoryId}")
@@ -55,7 +62,7 @@ public class EventRestController {
         Event savedEvent = eventRepository.save(event);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEvent);
     }
-
+    
     // PUT /api/events/{id}: Päivitä tapahtuma
     @PutMapping("/{id}")
     public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event updatedEventDetails) {
@@ -84,4 +91,5 @@ public class EventRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
 }

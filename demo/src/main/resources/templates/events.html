@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="">
 <head>
     <title>Tapahtumat</title>
 </head>
 <body>
 <h1>Kaikki tapahtumat</h1>
+
+<!-- Tapahtumien listaustaulukko -->
 <table border="1">
     <thead>
     <tr>
@@ -34,6 +36,29 @@
     </tr>
     </tbody>
 </table>
-<a href="/events/add">Lisää uusi tapahtuma</a>
+
+<!-- Lomake uuden tapahtuman lisäämiseen -->
+<h2>Lisää uusi tapahtuma</h2>
+<form th:action="@{/events/add}" th:object="${event}" method="POST">
+    <div>
+        <label for="title">Otsikko:</label>
+        <input type="text" id="title" name="title" th:field="*{title}" required>
+    </div>
+    <div>
+        <label for="description">Kuvaus:</label>
+        <textarea id="description" name="description" th:field="*{description}" required></textarea>
+    </div>
+    <div>
+        <label for="date">Päivämäärä:</label>
+        <input type="date" id="date" name="date" th:field="*{date}" required>
+    </div>
+    <div>
+        <label for="categories">Kategoriat:</label>
+        <select id="categories" name="categories" multiple th:field="*{categories}">
+            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+        </select>
+    </div>
+    <button type="submit">Lisää tapahtuma</button>
+</form>
 </body>
 </html>
