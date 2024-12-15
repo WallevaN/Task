@@ -25,6 +25,14 @@
             <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
         </select>
     </div>
+    <div>
+        <label for="imageUrl">Kuvan URL:</label>
+        <input type="url" id="imageUrl" name="imageUrl" th:field="*{imageUrl}" placeholder="Syötä kuvan URL">
+    </div>
+    <div>
+        <label for="linkUrl">Lisätietojen URL:</label>
+        <input type="url" id="linkUrl" name="linkUrl" th:field="*{linkUrl}" placeholder="Syötä lisätietojen URL">
+    </div>
     <button type="submit">Tallenna</button>
 </form>
 <a href="/events">Takaisin tapahtumiin</a>

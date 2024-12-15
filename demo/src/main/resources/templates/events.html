@@ -8,67 +8,79 @@
 <div class="container">
     <h1>Tervetuloa tapahtumien hallintaan</h1>
     <p>Hallinnoi tapahtumia ja kategorioita helposti.</p>
-    <!-- Muu sisältö, kuten lomakkeet tai taulukot -->
 
-<body>
-<h2>Kaikki tapahtumat</h2>
+    <h2>Kaikki tapahtumat</h2>
 
-<!-- Tapahtumien listaustaulukko -->
-<table border="1">
-    <thead>
+    <!-- Tapahtumien listaustaulukko -->
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Otsikko</th>
+            <th>Kuvaus</th>
+            <th>Päivämäärä</th>
+            <th>Kategoriat</th>
+            <th>Kuva</th>
+            <th>Lisätiedot</th>
+            <th>Toiminnot</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="event : ${events}">
+            <td th:text="${event.id}"></td>
+            <td th:text="${event.title}"></td>
+            <td th:text="${event.description}"></td>
+            <td th:text="${event.date}"></td>
+            <td>
+                <ul>
+                    <li th:each="category : ${event.categories}" th:text="${category.name}"></li>
+                </ul>
+            </td>
+            <td>
+                <a th:href="${event.imageUrl}" target="_blank" th:if="${event.imageUrl}">Kuva</a>
+            </td>
+            <td>
+                <a th:href="${event.linkUrl}" target="_blank" th:if="${event.linkUrl}">Lisätiedot</a>
+            </td>
+            <td>
+                <a th:href="@{/events/edit/{id}(id=${event.id})}">Muokkaa</a> |
+                <a th:href="@{/events/delete/{id}(id=${event.id})}">Poista</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-    <tr>
-        <th>ID</th>
-        <th>Otsikko</th>
-        <th>Kuvaus</th>
-        <th>Päivämäärä</th>
-        <th>Kategoriat</th>
-        <th>Toiminnot</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="event : ${events}">
-        <td th:text="${event.id}"></td>
-        <td th:text="${event.title}"></td>
-        <td th:text="${event.description}"></td>
-        <td th:text="${event.date}"></td>
-        <td>
-            <ul>
-                <li th:each="category : ${event.categories}" th:text="${category.name}"></li>
-            </ul>
-        </td>
-        <td>
-            <a th:href="@{/events/edit/{id}(id=${event.id})}">Muokkaa</a> |
-            <a th:href="@{/events/delete/{id}(id=${event.id})}">Poista</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<!-- Lomake uuden tapahtuman lisäämiseen -->
-<h2>Lisää uusi tapahtuma</h2>
-<form th:action="@{/events/add}" th:object="${event}" method="POST">
-    <div>
-        <label for="title">Otsikko:</label>
-        <input type="text" id="title" name="title" th:field="*{title}" required>
-    </div>
-    <div>
-        <label for="description">Kuvaus:</label>
-        <textarea id="description" name="description" th:field="*{description}" required></textarea>
-    </div>
-    <div>
-        <label for="date">Päivämäärä:</label>
-        <input type="date" id="date" name="date" th:field="*{date}" required>
-    </div>
-    <div>
-        <label for="categories">Kategoriat:</label>
-        <select id="categories" name="categories" multiple th:field="*{categories}">
-            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
-        </select>
-    </div>
-    <button type="submit">Lisää tapahtuma</button>
-</form>
-</body>
+    <!-- Lomake uuden tapahtuman lisäämiseen -->
+    <h2>Lisää uusi tapahtuma</h2>
+    <form th:action="@{/events/add}" th:object="${event}" method="POST">
+        <div>
+            <label for="title">Otsikko:</label>
+            <input type="text" id="title" name="title" th:field="*{title}" required>
+        </div>
+        <div>
+            <label for="description">Kuvaus:</label>
+            <textarea id="description" name="description" th:field="*{description}" required></textarea>
+        </div>
+        <div>
+            <label for="date">Päivämäärä:</label>
+            <input type="date" id="date" name="date" th:field="*{date}" required>
+        </div>
+        <div>
+            <label for="categories">Kategoriat:</label>
+            <select id="categories" name="categories" multiple th:field="*{categories}">
+                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+            </select>
+        </div>
+        <div>
+            <label for="imageUrl">Kuvan URL:</label>
+            <input type="url" id="imageUrl" name="imageUrl" th:field="*{imageUrl}" placeholder="Syötä kuvan URL">
+        </div>
+        <div>
+            <label for="linkUrl">Lisätietojen URL:</label>
+            <input type="url" id="linkUrl" name="linkUrl" th:field="*{linkUrl}" placeholder="Syötä lisätietojen URL">
+        </div>
+        <button type="submit">Lisää tapahtuma</button>
+    </form>
 </div>
 </body>
 </html>

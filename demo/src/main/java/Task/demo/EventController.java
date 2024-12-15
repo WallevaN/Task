@@ -6,9 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Controller
 @RequestMapping("/events")
 public class EventController {
@@ -68,38 +65,11 @@ public class EventController {
         eventRepository.save(event);
         return "redirect:/events"; // Paluu tapahtumalistaukseen
     }
-    @GetMapping("/edit/{id}")
-    public String showEditEventForm(@PathVariable("id") Long id, Model model) {
-        Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found: " + id));
-        model.addAttribute("event", event);
-        model.addAttribute("categories", categoryRepository.findAll());
-        return "event-edit"; // Thymeleaf-tiedosto "event-edit.html"
-    }
 
-    @PostMapping("/edit/{id}")
-    public String editEvent(@PathVariable("id") Long id,
-                            @ModelAttribute Event event,
-                            @RequestParam(value = "categoryIds", required = false) Set<Long> categoryIds) {
-        Event existingEvent = eventRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found: " + id));
-        existingEvent.setTitle(event.getTitle());
-        existingEvent.setDescription(event.getDescription());
-        existingEvent.setDate(event.getDate());
-
-        if (categoryIds != null) {
-            Set<Category> categories = new HashSet<>(categoryRepository.findAllById(categoryIds));
-            existingEvent.setCategories(categories);
-        }
-
-        eventRepository.save(existingEvent);
-        return "redirect:/events";
-    }
     @GetMapping("/delete/{id}")
     public String deleteEvent(@PathVariable("id") Long id) {
         eventRepository.deleteById(id);
         return "redirect:/events";
     }
-
 
 }
