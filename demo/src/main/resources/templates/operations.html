@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Operations</title>
+</head>
+<body>
+<h1>Operations</h1>
+<form th:action="@{/operations/add}" th:object="${event}" method="post">
+    <label>Title:</label>
+    <input type="text" th:field="*{title}" placeholder="Enter title" />
+    <label>Date:</label>
+    <input type="date" th:field="*{date}" />
+    <label>Categories:</label>
+    <select multiple th:field="*{categories}">
+        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+    </select>
+    <button type="submit">Add Operation</button>
+</form>
+<hr />
+<h2>All Operations</h2>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Date</th>
+        <th>Categories</th>
+        <th>Actions</th>
+    </tr>
+    <tr th:each="event : ${events}">
+        <td th:text="${event.title}">Title</td>
+        <td th:text="${event.date}">Date</td>
+        <td>
+            <span th:each="category : ${event.categories}" th:text="${category.name}">Category</span>
+        </td>
+        <td>
+            <a th:href="@{/operations/edit/{id}(id=${event.id})}">Edit</a>
+            <a th:href="@{/operations/delete/{id}(id=${event.id})}">Delete</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
