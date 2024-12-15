@@ -30,8 +30,8 @@
             </ul>
         </td>
         <td>
-            <a th:href="@{'/events/edit/' + ${event.id}}">Muokkaa</a> |
-            <a th:href="@{'/events/delete/' + ${event.id}}">Poista</a>
+            <a th:href="@{/events/edit/{id}(id=${event.id})}">Muokkaa</a> |
+            <a th:href="@{/events/delete/{id}(id=${event.id})}">Poista</a>
         </td>
     </tr>
     </tbody>

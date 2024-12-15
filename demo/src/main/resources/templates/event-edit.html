@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Muokkaa tapahtumaa</title>
+</head>
+<body>
+<h2>Muokkaa tapahtumaa</h2>
+<form th:action="@{/events/edit/{id}(id=${event.id})}" th:object="${event}" method="post">
+    <label for="title">Otsikko:</label>
+    <input type="text" id="title" th:field="*{title}" required><br>
+
+    <label for="description">Kuvaus:</label>
+    <textarea id="description" th:field="*{description}" required></textarea><br>
+
+    <label for="date">Päivämäärä:</label>
+    <input type="date" id="date" th:field="*{date}" required><br>
+
+    <label for="categories">Kategoriat:</label>
+    <select id="categories" name="categoryIds" multiple>
+        <option th:each="category : ${categories}"
+                th:value="${category.id}"
+                th:text="${category.name}"
+                th:selected="${event.categories.contains(category)}"></option>
+    </select><br>
+
+    <button type="submit">Tallenna muutokset</button>
+</form>
+<a href="/events">Takaisin</a>
+</body>
+</html>

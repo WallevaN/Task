@@ -1,6 +1,5 @@
 package Task.demo;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,6 @@ public class OperationsController {
         this.categoryRepository = categoryRepository;
     }
 
-    // Näytä kaikki tapahtumat ja lomake uuden tapahtuman lisäämiseksi
     @GetMapping
     public String showOperationsPage(Model model) {
         model.addAttribute("events", eventRepository.findAllWithCategories());
@@ -26,14 +24,12 @@ public class OperationsController {
         return "operations";
     }
 
-    // Käsittele uuden tapahtuman lisääminen
     @PostMapping("/add")
     public String addOperation(@ModelAttribute Event event) {
         eventRepository.save(event);
         return "redirect:/operations";
     }
 
-    // Näytä lomake tapahtuman muokkaamiseksi
     @GetMapping("/edit/{id}")
     public String showEditOperationForm(@PathVariable Long id, Model model) {
         Event event = eventRepository.findById(id).orElseThrow(() -> new RuntimeException("Event not found"));
@@ -42,7 +38,6 @@ public class OperationsController {
         return "edit-operation";
     }
 
-    // Käsittele tapahtuman muokkaaminen
     @PostMapping("/edit/{id}")
     public String editOperation(@PathVariable Long id, @ModelAttribute Event event) {
         event.setId(id);
@@ -50,7 +45,6 @@ public class OperationsController {
         return "redirect:/operations";
     }
 
-    // Käsittele tapahtuman poistaminen
     @GetMapping("/delete/{id}")
     public String deleteOperation(@PathVariable Long id) {
         eventRepository.deleteById(id);
